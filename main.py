@@ -9,12 +9,10 @@ import logging
 from db.db_conf import get_db
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from models.card import Card
 from schemas.request_schemas.ping_schema import PingRequest
 from models.ping import Ping
 from sqlalchemy.orm import Session
 from schemas.request_schemas.card_request import CardDelete, CardRequest,UserRegister,UserLogin
-from models.user import User
 import jwt
 
 load_dotenv()
@@ -56,42 +54,42 @@ def ping(request: PingRequest, db:Session=Depends(get_db)):
     return True
 
 
-@app.post('/new_card')
-def new_card(request: CardRequest, db:Session=Depends(get_db), authorization: str = Header(None)):
-    try: 
-        user_data = secure(authorization)
-    except Exception as e:
-        return 'Not valid token'
+# @app.post('/new_card')
+# def new_card(request: CardRequest, db:Session=Depends(get_db), authorization: str = Header(None)):
+#     try: 
+#         user_data = secure(authorization)
+#     except Exception as e:
+#         return 'Not valid token'
 
-    request = dict(request)
-    card = Card(**request, user_id=user_data['user_id'])
-    db.add(card)
-    db.commit()
-    db.refresh(card)
-    return card
+#     request = dict(request)
+#     card = Card(**request, user_id=user_data['user_id'])
+#     db.add(card)
+#     db.commit()
+#     db.refresh(card)
+#     return card
 
-@app.post('/register')
-def register(request: UserRegister, db: Session=Depends(get_db)):
-    user = db.query(User).filter(User.login==request.login).first()
-    if user:
-        return {'error': 'user is already registred'}
-    obj: User = db.query(User).order_by(User.id.desc()).first()
-    id = obj.id + 1
-    encoded_jwt = jwt.encode({"login": request.login, 'password': request.password, 'user_id': id}, "secret", algorithm="HS256")
-    user = User(login=request.login, email=request.email, password=request.password, token=encoded_jwt)
+#@app.post('/register')
+# def register(request: UserRegister, db: Session=Depends(get_db)):
+#     user = db.query(User).filter(User.login==request.login).first()
+#     if user:
+#         return {'error': 'user is already registred'}
+#     obj: User = db.query(User).order_by(User.id.desc()).first()
+#     id = obj.id + 1
+#     encoded_jwt = jwt.encode({"login": request.login, 'password': request.password, 'user_id': id}, "secret", algorithm="HS256")
+#     user = User(login=request.login, email=request.email, password=request.password, token=encoded_jwt)
     
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+#     db.add(user)
+#     db.commit()
+#     db.refresh(user)
+#     return user
 
-@app.post('/login')
-def login(request: UserLogin, db: Session=Depends(get_db)):
-    user = db.query(User).filter(User.login==request.login,).first()
-    if not user:
-        return {'error': 'No such user'}
-    else:
-        return user
+# @app.post('/login')
+# def login(request: UserLogin, db: Session=Depends(get_db)):
+#     user = db.query(User).filter(User.login==request.login,).first()
+#     if not user:
+#         return {'error': 'No such user'}
+#     else:
+#         return user
 
 if __name__ == "__main__":
     uvicorn.run('main:app', host="0.0.0.0", port=8007, reload=True, debug=True)

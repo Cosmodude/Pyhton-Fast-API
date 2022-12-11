@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey,
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = (f"postgresql://{os.environ.get('DB_USER')}"
+SQLALCHEMY_DATABASE_URL = (f"mysql://{os.environ.get('DB_USER')}"
                 f":{os.environ.get('DB_PASSWORD')}"
                 f"@{os.environ.get('DB_HOST')}"
                 f"/{os.environ.get('DB_NAME')}")
