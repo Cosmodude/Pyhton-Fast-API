@@ -1,5 +1,4 @@
 import logging.config
-from typing import List
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, Query, Request, Response, Depends, Header
@@ -8,12 +7,9 @@ from logs.logs_config import LOGGING_CONFIG
 import logging
 from db.db_conf import get_db
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from schemas.request_schemas.ping_schema import PingRequest
-from models.ping import Ping
 from models.NFT_Project import Project 
 from sqlalchemy.orm import Session
-from schemas.request_schemas.card_request import CardDelete, CardRequest,UserRegister,UserLogin
 import jwt
 
 load_dotenv()
@@ -46,11 +42,11 @@ def secure(token):
     # this is often used on the client side to encode the user's email address or other properties
     return decoded_token
 
-@app.post('/ping')
+@app.post('/post')
 def ping(request: PingRequest, db:Session=Depends(get_db)):
-    logger.info(f"ping {request.text}")
-    ping = Ping(text=request.text)
-    db.add(ping)
+    logger.info(f" {request.text}")
+    add_substance = Project(name=request.text)
+    db.add(add_substance)
     db.commit()
     return True
 
