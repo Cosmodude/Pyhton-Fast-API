@@ -7,7 +7,7 @@ from logs.logs_config import LOGGING_CONFIG
 import logging
 from db.db_conf import get_db
 from fastapi.middleware.cors import CORSMiddleware
-from schemas.request_schemas.ping_schema import PingRequest
+from schemas.request_schemas.Project_request import Postdata
 from models.NFT_Project import Project 
 from sqlalchemy.orm import Session
 import jwt
@@ -43,9 +43,22 @@ def secure(token):
     return decoded_token
 
 @app.post('/post')
-def ping(request: PingRequest, db:Session=Depends(get_db)):
-    logger.info(f" {request.text}")
-    add_substance = Project(name=request.text)
+def post(request: Postdata, db:Session=Depends(get_db)):
+    logger.info(f"{request}")
+    add_substance = Project(
+        id=request.id,
+        name=request.name,
+        image=request.image,
+        buy_token_name=request.buy_token_name,
+        chain_name=request.chain_name,
+        floor_price=request.floor_price,
+        buy_token_price=request.buy_token_price,
+        earn_token_name=request.earn_token_name,
+        earn_token_price=request.earn_token_price,
+        last_updated=request.last_updated,
+        earn_rate_ET=request.earn_rate_ET,
+        contract_address=request.contract_address
+        )
     db.add(add_substance)
     db.commit()
     return True
