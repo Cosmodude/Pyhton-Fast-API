@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from schemas.request_schemas.ping_schema import PingRequest
 from models.ping import Ping
+from models.NFT_Project import Project 
 from sqlalchemy.orm import Session
 from schemas.request_schemas.card_request import CardDelete, CardRequest,UserRegister,UserLogin
 import jwt
@@ -53,7 +54,14 @@ def ping(request: PingRequest, db:Session=Depends(get_db)):
     db.commit()
     return True
 
+@app.get('/getall')
+def get_all(db:Session=Depends(get_db)):
+    return db.query(Project).all()
+    
 
+@app.get('/getname')
+def get_all(db:Session=Depends(get_db)):
+    return db.query(Project).with_entities(Project.name).all()
 # @app.post('/new_card')
 # def new_card(request: CardRequest, db:Session=Depends(get_db), authorization: str = Header(None)):
 #     try: 
