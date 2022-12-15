@@ -45,20 +45,7 @@ def secure(token):
 @app.post('/post')
 def post(request: Postdata, db:Session=Depends(get_db)):
     logger.info(f"{request}")
-    add_substance = Project(
-        id=request.id,
-        name=request.name,
-        image=request.image,
-        buy_token_name=request.buy_token_name,
-        chain_name=request.chain_name,
-        floor_price=request.floor_price,
-        buy_token_price=request.buy_token_price,
-        earn_token_name=request.earn_token_name,
-        earn_token_price=request.earn_token_price,
-        last_updated=request.last_updated,
-        earn_rate_ET=request.earn_rate_ET,
-        contract_address=request.contract_address
-        )
+    add_substance = Project(**dict(request))
     db.add(add_substance)
     db.commit()
     return True
