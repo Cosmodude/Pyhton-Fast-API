@@ -7,7 +7,7 @@ from db.db_conf import Base
 
 class Project(Base):
 
-    __tablename__ = 'NFT_PR'
+    __tablename__ = 'nft_pr'
 
     id = Column("id",Integer, primary_key=True, index=True)
     name = Column("project_name",String(30), nullable=False)
