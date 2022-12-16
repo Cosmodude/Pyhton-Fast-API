@@ -3,11 +3,10 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, BigInteger, Boolean, TIMESTAMP
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = (f"mysql://{os.environ.get('DB_USER')}"
+SQLALCHEMY_DATABASE_URL = (f"mysql+mysqldb://{os.environ.get('DB_USER')}"
                 f":{os.environ.get('DB_PASSWORD')}"
                 f"@{os.environ.get('DB_HOST')}"
                 f"/{os.environ.get('DB_NAME')}")
