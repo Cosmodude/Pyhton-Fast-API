@@ -68,8 +68,8 @@ def get_all(db:Session=Depends(get_db)):
     
 
 @app.get('/project')
-def get_all(pr_name: str, db:Session=Depends(get_db)):
-    response= db.query(Project).filter(Project.name == pr_name).first().__dict__
+def get_all(id: int, db:Session=Depends(get_db)):
+    response= db.query(Project).filter(Project.id == id).first().__dict__
     ### Adding dollar prices
     response["floor_price_D"]=\
     float(response["floor_price"])*\

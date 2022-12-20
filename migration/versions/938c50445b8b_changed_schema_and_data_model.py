@@ -32,8 +32,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_nft_pr_id'), 'nft_pr', ['id'], unique=False)
-    op.drop_index('ix_ping_id', table_name='ping')
-    op.drop_table('ping')
     # ### end Alembic commands ###
 
 
@@ -49,5 +47,5 @@ def downgrade() -> None:
     )
     op.create_index('ix_ping_id', 'ping', ['id'], unique=False)
     op.drop_index(op.f('ix_nft_pr_id'), table_name='nft_pr')
-    op.drop_table('nft_pr')
+    op.drop_table('ping')
     # ### end Alembic commands ###
