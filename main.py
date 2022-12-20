@@ -11,6 +11,7 @@ from schemas.request_schemas.Project_request import Postdata
 from models.NFT_Project import Project 
 from sqlalchemy.orm import Session
 import jwt
+from External_API.API_script import CoinMarketCap_API as CMC_API, OpenSea_API
 
 load_dotenv()
 
@@ -42,7 +43,7 @@ def secure(token):
     # this is often used on the client side to encode the user's email address or other properties
     return decoded_token
 
-@app.post('/postdata')
+@app.post('/projects')
 def post(request: Postdata, db:Session=Depends(get_db)):
     logger.info(f"{request}")
     add_substance = Project(**dict(request))
@@ -50,14 +51,25 @@ def post(request: Postdata, db:Session=Depends(get_db)):
     db.commit()
     return True
 
-@app.get('/getall')
+@app.get('/projects')
 def get_all(db:Session=Depends(get_db)):
-    return db.query(Project).all()
+    DBdata=db.query(Project).all()
+    return DBdata
     
 
-@app.get('/getname')
-def get_all(db:Session=Depends(get_db)):
-    return db.query(Project).with_entities(Project.name).all()
+@app.get('/project')
+def get_all(pr_name: str, db:Session=Depends(get_db)):
+    response= (db.query(Project).filter(Project.name == pr_name).first().__dict__)
+    ### Adding dollar prices
+    response["floor_price_D"]=\
+    float(response["floor_price"])*\
+    CMC_API(response["buy_token_name"])\
+    ["data"][0]["quote"]["USD"]["price"]
+    response["earn_rate_D"]=\
+    float(response["earn_rate_ET"])*\
+    CMC_API(response["earn_token_name"])\
+    ["data"][0]["quote"]["USD"]["price"]
+    return response
 # @app.post('/new_card')
 # def new_card(request: CardRequest, db:Session=Depends(get_db), authorization: str = Header(None)):
 #     try: 
@@ -71,7 +83,8 @@ def get_all(db:Session=Depends(get_db)):
 #     db.commit()
 #     db.refresh(card)
 #     return card
-
+'''print(CMC_API("ICE")\
+    ["data"][0]["quote"]["USD"]["price"])'''
 #@app.post('/register')
 # def register(request: UserRegister, db: Session=Depends(get_db)):
 #     user = db.query(User).filter(User.login==request.login).first()
