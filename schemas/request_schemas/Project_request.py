@@ -16,3 +16,4 @@ class Postdata(BaseModel):
     last_updated: datetime
     earn_rate_ET: float
     contract_address: str
+

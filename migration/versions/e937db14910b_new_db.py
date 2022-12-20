@@ -35,7 +35,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_nft_pr_id'), 'nft_pr', ['id'], unique=False)
     op.drop_index('ix_nft_pr_id', table_name='nft_pr')
-    op.drop_table('nft_pr')
+    
     # ### end Alembic commands ###
 
 
