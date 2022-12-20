@@ -53,13 +53,23 @@ def post(request: Postdata, db:Session=Depends(get_db)):
 
 @app.get('/projects')
 def get_all(db:Session=Depends(get_db)):
-    DBdata=db.query(Project).all()
-    return DBdata
+    response=db.query(Project).all()
+    #print(CMC_API(str(response[0].earn_token_name)))
+    for project in response:
+        project.__dict__["floor_price_D"]=\
+        float(project.floor_price)*\
+        CMC_API(project.buy_token_name)\
+        ["data"][0]["quote"]["USD"]["price"]
+        project.__dict__["earn_rate_D"]=\
+        float(project.earn_rate_ET)*\
+        CMC_API(str(project.earn_token_name))\
+        ["data"][0]["quote"]["USD"]["price"]
+    return response
     
 
 @app.get('/project')
 def get_all(pr_name: str, db:Session=Depends(get_db)):
-    response= (db.query(Project).filter(Project.name == pr_name).first().__dict__)
+    response= db.query(Project).filter(Project.name == pr_name).first().__dict__
     ### Adding dollar prices
     response["floor_price_D"]=\
     float(response["floor_price"])*\
