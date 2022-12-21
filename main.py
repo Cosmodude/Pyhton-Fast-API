@@ -8,7 +8,9 @@ import logging
 from db.db_conf import get_db
 from fastapi.middleware.cors import CORSMiddleware
 from schemas.request_schemas.Project_request import Postdata
-from models.NFT_Project import Project 
+from schemas.request_schemas.User_pre_request import PostUser
+from models.NFT_Project import Project
+from models.User_pre import User
 from sqlalchemy.orm import Session
 import jwt
 from External_API.API_script import CoinMarketCap_API as CMC_API, OpenSea_API
@@ -80,21 +82,23 @@ def get_all(id: int, db:Session=Depends(get_db)):
     CMC_API(response["earn_token_name"])\
     ["data"][0]["quote"]["USD"]["price"]
     return response
-# @app.post('/new_card')
-# def new_card(request: CardRequest, db:Session=Depends(get_db), authorization: str = Header(None)):
-#     try: 
-#         user_data = secure(authorization)
-#     except Exception as e:
-#         return 'Not valid token'
 
-#     request = dict(request)
-#     card = Card(**request, user_id=user_data['user_id'])
-#     db.add(card)
-#     db.commit()
-#     db.refresh(card)
-#     return card
-'''print(CMC_API("ICE")\
-    ["data"][0]["quote"]["USD"]["price"])'''
+@app.post('/user_pre')
+def post_user(request: PostUser, db:Session=Depends(get_db)):
+    add_substance = User(**dict(request))
+    db.add(add_substance)
+    db.commit()
+    return True, add_substance
+
+@app.get('/user_pre')
+def get_user(id: int, db:Session=Depends(get_db)):
+    response= db.query(User).filter(User.id == id).first().__dict__
+    return response
+
+@app.get('/users_pre')
+def get_users(id: int, db:Session=Depends(get_db)):
+    response= db.query(User).all()
+    return response
 #@app.post('/register')
 # def register(request: UserRegister, db: Session=Depends(get_db)):
 #     user = db.query(User).filter(User.login==request.login).first()
