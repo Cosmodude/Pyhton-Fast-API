@@ -96,7 +96,7 @@ def get_user(id: int, db:Session=Depends(get_db)):
     return response
 
 @app.get('/users_pre')
-def get_users(id: int, db:Session=Depends(get_db)):
+def get_users(db:Session=Depends(get_db)):
     response= db.query(User).all()
     return response
 #@app.post('/register')

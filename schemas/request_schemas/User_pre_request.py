@@ -8,4 +8,5 @@ class PostUser(BaseModel):
     first_name: str
     last_name: str
     email:str
+    feedback:str
     entry_time: datetime
