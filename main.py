@@ -88,7 +88,7 @@ def post_user(request: PostUser, db:Session=Depends(get_db)):
     add_substance = User(**dict(request))
     db.add(add_substance)
     db.commit()
-    return True, add_substance
+    return True, request
 
 @app.get('/user_pre')
 def get_user(id: int, db:Session=Depends(get_db)):
