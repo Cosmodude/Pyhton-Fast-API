@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 import requests
-axie_url = "https://api.opensea.io/api/v1/collection/axie"
+
 ice_poker_url ="https://api.opensea.io/api/v1/collection/decentral-games-ice"
 
 
@@ -17,11 +17,15 @@ def CoinMarketCap_API(symbol):
     json= requests.get(coinmarketcap_url,params=parameters, headers=headers).json()
     return json
 
-def OpenSea_API(url):
-    json= requests.get(url).json()
+def OpenSea_API(project_name):
+    Opensea_collections_url = "https://api.opensea.io/api/v1/collection/"
+    json= requests.get(Opensea_collections_url+project_name).json()
+    #print(json)
     return json
 
-'''axie_json=OpenSea_API(axie_url)
+
+OpenSea_API("stepn")
+'''
 print(axie_json["collection"]["stats"]["floor_price"])
 print(axie_json["collection"]["primary_asset_contracts"][0]["address"])'''
 #print(CoinMarketCap_API("ICE")["data"][0]["quote"]["USD"]["price"])

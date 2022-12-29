@@ -17,6 +17,9 @@ from External_API.API_script import CoinMarketCap_API as CMC_API, OpenSea_API
 
 load_dotenv()
 
+Not_on_Opensea={"Axie Infinity", "Thetan Arena", "Mobox" }
+OpenSea_Url_Ending= {"Ice Poker":"decentral-games-ice","Stepn": "stepn","League of Kingdoms": "league-of-kingdoms" }
+
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
@@ -58,14 +61,24 @@ def get_all(db:Session=Depends(get_db)):
     response=db.query(Project).all()
     #print(CMC_API(str(response[0].earn_token_name)))
     for project in response:
-        project.__dict__["floor_price_D"]=\
-        float(project.floor_price)*\
-        CMC_API(project.buy_token_name)\
-        ["data"][0]["quote"]["USD"]["price"]
-        project.__dict__["earn_rate_D"]=\
-        float(project.earn_rate_ET)*\
-        CMC_API(str(project.earn_token_name))\
-        ["data"][0]["quote"]["USD"]["price"]
+        if project.name in Not_on_Opensea:
+            project.__dict__["floor_price_D"]=\
+            float(project.floor_price)*\
+            CMC_API(project.buy_token_name)\
+            ["data"][0]["quote"]["USD"]["price"]
+            project.__dict__["earn_rate_D"]=\
+            float(project.earn_rate_ET)*\
+            CMC_API(str(project.earn_token_name))\
+            ["data"][0]["quote"]["USD"]["price"]
+        else: 
+            project.__dict__["floor_price_D"]=\
+            OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
+            CMC_API(project.buy_token_name)\
+            ["data"][0]["quote"]["USD"]["price"]
+            project.__dict__["earn_rate_D"]=\
+            float(project.earn_rate_ET)*\
+            CMC_API(str(project.earn_token_name))\
+            ["data"][0]["quote"]["USD"]["price"]
     return response
     
 
@@ -99,6 +112,7 @@ def get_user(id: int, db:Session=Depends(get_db)):
 def get_users(db:Session=Depends(get_db)):
     response= db.query(User).all()
     return response
+
 #@app.post('/register')
 # def register(request: UserRegister, db: Session=Depends(get_db)):
 #     user = db.query(User).filter(User.login==request.login).first()
