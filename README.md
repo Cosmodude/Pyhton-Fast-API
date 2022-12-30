@@ -5,3 +5,4 @@ to run a project:
 3)poetry install
 4)poetry shell
 5)uvicorn main:app --reload to start a server
+schemas and models need check
