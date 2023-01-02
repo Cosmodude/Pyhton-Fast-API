@@ -43,6 +43,7 @@ class Projects(Base):
         project_image=Column("project_image",String(100))
         floor_price=Column("floor_price_BT",Numeric(10,6) )
         earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
+        category=Column("project_category",String(100))
 
         def __repr__(self):
             return f'{self.id}: {self.name}: floor price={self.site}'
