@@ -9,7 +9,7 @@ from db.db_conf import get_db
 from fastapi.middleware.cors import CORSMiddleware
 from schemas.request_schemas.Project_request import Postdata
 from schemas.request_schemas.User_pre_request import PostUser
-from models.NFT_Project import Project
+from models.NFT_Project import Projects,Project
 from models.User_pre import User
 from sqlalchemy.orm import Session
 import jwt
@@ -51,14 +51,15 @@ def secure(token):
 @app.post('/projects')
 def post(request: Postdata, db:Session=Depends(get_db)):
     logger.info(f"{request}")
-    add_substance = Project(**dict(request))
+    add_substance = Projects(**dict(request))
     db.add(add_substance)
     db.commit()
     return True
 
 @app.get('/projects')
 def get_all(db:Session=Depends(get_db)):
-    response=db.query(Project).all()
+    response=db.query(Projects).all()
+    ### Adding dollar prices
     #print(CMC_API(str(response[0].earn_token_name)))
     for project in response:
         if project.name in Not_on_Opensea:
@@ -84,17 +85,27 @@ def get_all(db:Session=Depends(get_db)):
 
 @app.get('/project')
 def get_all(id: int, db:Session=Depends(get_db)):
-    response= db.query(Project).filter(Project.id == id).first().__dict__
+    project= db.query(Project).filter(Project.id == id).first().__dict__
     ### Adding dollar prices
-    response["floor_price_D"]=\
-    float(response["floor_price"])*\
-    CMC_API(response["buy_token_name"])\
-    ["data"][0]["quote"]["USD"]["price"]
-    response["earn_rate_D"]=\
-    float(response["earn_rate_ET"])*\
-    CMC_API(response["earn_token_name"])\
-    ["data"][0]["quote"]["USD"]["price"]
-    return response
+    if project.name in Not_on_Opensea:
+            project.__dict__["floor_price_D"]=\
+            float(project.floor_price)*\
+            CMC_API(project.buy_token_name)\
+            ["data"][0]["quote"]["USD"]["price"]
+            project.__dict__["earn_rate_D"]=\
+            float(project.earn_rate_ET)*\
+            CMC_API(str(project.earn_token_name))\
+            ["data"][0]["quote"]["USD"]["price"]
+    else: 
+            project.__dict__["floor_price_D"]=\
+            OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
+            CMC_API(project.buy_token_name)\
+            ["data"][0]["quote"]["USD"]["price"]
+            project.__dict__["earn_rate_D"]=\
+            float(project.earn_rate_ET)*\
+            CMC_API(str(project.earn_token_name))\
+            ["data"][0]["quote"]["USD"]["price"]
+    return project
 
 @app.post('/user_pre')
 def post_user(request: PostUser, db:Session=Depends(get_db)):
