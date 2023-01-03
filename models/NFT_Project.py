@@ -8,6 +8,7 @@ from db.db_conf import Base
 class Projects(Base):
 
     __tablename__ = 'nft_pr'
+    __table_args__ = {'extend_existing': True}
 
     id = Column("id",Integer, primary_key=True, index=True)
     name = Column("project_name",String(30), nullable=False) #name of the project
@@ -19,35 +20,33 @@ class Projects(Base):
     last_updated=Column("last_updated",DateTime)
     daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
 
-    
-
-
     def __repr__(self):
         return f'{self.id}: {self.name}: floor price={self.floor_price}'
         
 
-    class Project(Base):
+class Project(Base):
 
-        __tablename__ = 'nft_pr'
+    __tablename__ = 'nft_pr'
+    __table_args__ = {'extend_existing': True}
 
-        id = Column("id",Integer, primary_key=True, index=True)
-        name = Column("project_name",String(30), nullable=False)
-        description=Column("project_description",String(1000))
-        chain_name=Column("chain_name",String(30))
-        earn_token_name=Column("earn_token_name",String(5))
-        earn_token_image=Column("earn_token_image",String(100))
-        last_updated=Column("last_updated",DateTime)
-        twitter=Column("twitter_url",String(100))
-        telegram=Column("telegram_url",String(100))
-        webpage=Column("project_webpage_url",String(100))
-        discord=Column("discord_url",String(100))
-        project_image=Column("project_image_url",String(100))
-        nft_floor_price=Column("floor_price_BT",Numeric(10,6) )
-        daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
-        category=Column("project_category",String(200))
-        nft_required=Column("nft_required_number",Integer)
-        project_poster=Column("poster_url",String(100))
+    id = Column("id",Integer, primary_key=True, index=True)
+    name = Column("project_name",String(30), nullable=False)
+    description=Column("project_description",String(1000))
+    chain_name=Column("chain_name",String(30))
+    earn_token_name=Column("earn_token_name",String(5))
+    earn_token_image=Column("earn_token_image",String(100))
+    last_updated=Column("last_updated",DateTime)
+    twitter=Column("twitter_url",String(100))
+    telegram=Column("telegram_url",String(100))
+    webpage=Column("project_webpage_url",String(100))
+    discord=Column("discord_url",String(100))
+    project_image=Column("project_image_url",String(100))
+    nft_floor_price=Column("floor_price_BT",Numeric(10,6) )
+    daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
+    category=Column("project_category",String(200))
+    nft_required=Column("nft_required_number",Integer)
+    project_poster=Column("poster_url",String(100))
 
-        def __repr__(self):
-            return f'{self.id}: {self.name}: floor price={self.site}'
-            
+    def __repr__(self):
+        return f'{self.id}: {self.name}: floor price={self.site}'
+        
