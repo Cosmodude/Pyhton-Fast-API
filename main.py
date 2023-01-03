@@ -63,21 +63,24 @@ def get_all(db:Session=Depends(get_db)):
     #print(CMC_API(str(response[0].earn_token_name)))
     for project in response:
         if project.name in Not_on_Opensea:
-            project.__dict__["floor_price_D"]=\
+            project.__dict__["nft_floor_price_D"]=\
+            project
             float(project.floor_price)*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
-            project.__dict__["earn_rate_D"]=\
-            float(project.earn_rate_ET)*\
+
+            project.__dict__["daily_earn_rate_D"]=\
+            float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
         else: 
-            project.__dict__["floor_price_D"]=\
+            project.__dict__["nft_floor_price_D"]=\
             OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
-            project.__dict__["earn_rate_D"]=\
-            float(project.earn_rate_ET)*\
+
+            project.__dict__["daily_earn_rate_D"]=\
+            float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
     return response
@@ -88,21 +91,21 @@ def get_all(id: int, db:Session=Depends(get_db)):
     project= db.query(Project).filter(Project.id == id).first().__dict__
     ### Adding dollar prices
     if project.name in Not_on_Opensea:
-            project.__dict__["floor_price_D"]=\
+            project.__dict__["nft_floor_price_D"]=\
             float(project.floor_price)*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
-            project.__dict__["earn_rate_D"]=\
-            float(project.earn_rate_ET)*\
+            project.__dict__["daily_earn_rate_D"]=\
+            float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
     else: 
-            project.__dict__["floor_price_D"]=\
+            project.__dict__["nft_floor_price_D"]=\
             OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
-            project.__dict__["earn_rate_D"]=\
-            float(project.earn_rate_ET)*\
+            project.__dict__["daily_earn_rate_D"]=\
+            float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
     return project
