@@ -83,6 +83,10 @@ def get_all(db:Session=Depends(get_db)):
             float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
+        
+        project["min_investment"]=project["nft_floor_price_D"]*\
+        project["nft_required"]*1.5
+    
     return response
     
 
@@ -95,6 +99,7 @@ def get_all(id: int, db:Session=Depends(get_db)):
             float(project.floor_price)*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
+
             project.__dict__["daily_earn_rate_D"]=\
             float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
@@ -104,10 +109,13 @@ def get_all(id: int, db:Session=Depends(get_db)):
             OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
+
             project.__dict__["daily_earn_rate_D"]=\
             float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
+
+    
     return project
 
 @app.post('/user_pre')
