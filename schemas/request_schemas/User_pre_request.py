@@ -4,9 +4,6 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 class PostUser(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
+    name: str
     email:str
     feedback:str
-    entry_time: datetime
