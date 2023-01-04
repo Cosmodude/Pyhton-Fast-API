@@ -57,7 +57,6 @@ def get_all(db:Session=Depends(get_db)):
     for project in response:
         if project.name in Not_on_Opensea:
             project.__dict__["nft_floor_price_D"]=\
-            project
             float(project.nft_floor_price)*\
             CMC_API(project.required_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
@@ -77,9 +76,8 @@ def get_all(db:Session=Depends(get_db)):
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
         
-        project["min_investment"]=project["nft_floor_price_D"]*\
-        project["nft_required"]*1.5
-    
+        project.__dict__["min_investment"]=project.nft_floor_price_D*\
+        project.nft_required*1.5
     return response
     
 
@@ -108,7 +106,6 @@ def get_all(id: int, db:Session=Depends(get_db)):
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
 
-    
     return project
 
 @app.post('/user_pre')
@@ -143,13 +140,6 @@ def get_users(db:Session=Depends(get_db)):
 #     db.refresh(user)
 #     return user
 
-# @app.post('/login')
-# def login(request: UserLogin, db: Session=Depends(get_db)):
-#     user = db.query(User).filter(User.login==request.login,).first()
-#     if not user:
-#         return {'error': 'No such user'}
-#     else:
-#         return user
 
 if __name__ == "__main__":
     uvicorn.run('main:app', host="0.0.0.0", port=8007, reload=True, debug=True)
