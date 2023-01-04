@@ -48,13 +48,6 @@ def secure(token):
     # this is often used on the client side to encode the user's email address or other properties
     return decoded_token
 
-@app.post('/projects')
-def post(request: Postdata, db:Session=Depends(get_db)):
-    logger.info(f"{request}")
-    add_substance = Projects(**dict(request))
-    db.add(add_substance)
-    db.commit()
-    return True
 
 @app.get('/projects')
 def get_all(db:Session=Depends(get_db)):
