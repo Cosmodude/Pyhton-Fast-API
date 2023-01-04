@@ -66,7 +66,7 @@ def get_all(db:Session=Depends(get_db)):
             project.__dict__["nft_floor_price_D"]=\
             project
             float(project.nft_floor_price)*\
-            CMC_API(project.buy_token_name)\
+            CMC_API(project.required_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
             project.__dict__["daily_earn_rate_D"]=\
@@ -76,7 +76,7 @@ def get_all(db:Session=Depends(get_db)):
         else: 
             project.__dict__["nft_floor_price_D"]=\
             OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
-            CMC_API(project.buy_token_name)\
+            CMC_API(project.required_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
             project.__dict__["daily_earn_rate_D"]=\
@@ -97,7 +97,7 @@ def get_all(id: int, db:Session=Depends(get_db)):
     if project.name in Not_on_Opensea:
             project.__dict__["nft_floor_price_D"]=\
             float(project.nft_floor_price)*\
-            CMC_API(project.buy_token_name)\
+            CMC_API(project.required_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
             project.__dict__["daily_earn_rate_D"]=\
@@ -107,7 +107,7 @@ def get_all(id: int, db:Session=Depends(get_db)):
     else: 
             project.__dict__["nft_floor_price_D"]=\
             OpenSea_API(OpenSea_Url_Ending[project.name])["collection"]["stats"]["floor_price"]*\
-            CMC_API(project.buy_token_name)\
+            CMC_API(project.required_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
             project.__dict__["daily_earn_rate_D"]=\
