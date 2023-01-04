@@ -65,7 +65,7 @@ def get_all(db:Session=Depends(get_db)):
         if project.name in Not_on_Opensea:
             project.__dict__["nft_floor_price_D"]=\
             project
-            float(project.floor_price)*\
+            float(project.nft_floor_price)*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
@@ -96,7 +96,7 @@ def get_all(id: int, db:Session=Depends(get_db)):
     ### Adding dollar prices
     if project.name in Not_on_Opensea:
             project.__dict__["nft_floor_price_D"]=\
-            float(project.floor_price)*\
+            float(project.nft_floor_price)*\
             CMC_API(project.buy_token_name)\
             ["data"][0]["quote"]["USD"]["price"]
 
