@@ -76,8 +76,8 @@ def get_all(db:Session=Depends(get_db)):
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
         
-        project.__dict__["min_investment"]=project.nft_floor_price_D*\
-        project.nft_required*1.5
+        project.__dict__["min_investment"]=float(project.nft_floor_price_D)*\
+        float(project.nft_required)*1.5
     return response
     
 
