@@ -83,7 +83,7 @@ def get_all(db:Session=Depends(get_db)):
 
 @app.get('/project')
 def get_all(id: int, db:Session=Depends(get_db)):
-    project= db.query(Project).filter(Project.id == id).first().__dict__
+    project= db.query(Project).filter(Project.id == id).first()
     ### Adding dollar prices
     if project["name"] in Not_on_Opensea:
             project.__dict__["nft_floor_price_D"]=\
