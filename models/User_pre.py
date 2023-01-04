@@ -10,11 +10,9 @@ class User(Base):
     __tablename__ = 'users_pre'
 
     id = Column("id",Integer, primary_key=True, index=True)
-    first_name = Column("first_name",String(30), nullable=False)
-    last_name = Column("last_name",String(30), nullable=False)
+    name = Column("name",String(30), nullable=False)
     email=Column("email",String(50))
     feedback=Column("feedback",Text)
-    entry_time=Column("entry_time",DateTime)
     
     def __repr__(self):
         return f'{self.id}: {self.first_name}: last_name={self.last_name}'
