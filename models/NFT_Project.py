@@ -19,7 +19,8 @@ class Projects(Base):
     earn_token_name=Column("earn_token_name",String(5))
     last_updated=Column("last_updated",DateTime)
     daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
-
+    nft_required=Column("nft_required_number",Integer)
+    
     def __repr__(self):
         return f'{self.id}: {self.name}: floor price={self.floor_price}'
         
