@@ -105,6 +105,8 @@ def get_all(id: int, db:Session=Depends(get_db)):
             float(project.daily_earn_rate_ET)*\
             CMC_API(str(project.earn_token_name))\
             ["data"][0]["quote"]["USD"]["price"]
+    
+    project.category=str(project.category).split(",")
 
     return project
 
