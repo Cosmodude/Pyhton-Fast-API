@@ -55,7 +55,7 @@ def get_all(db:Session=Depends(get_db)):
     ### Adding dollar prices
     #print(CMC_API(str(response[0].earn_token_name)))
     for project in response:
-        if project.name not in OpenSea_Url_Ending.keys:
+        if project.name not in OpenSea_Url_Ending.keys():
             project.__dict__["nft_floor_price_D"]=\
             float(project.nft_floor_price)*\
             CMC_API(project.required_token_name)\
@@ -85,7 +85,7 @@ def get_all(db:Session=Depends(get_db)):
 def get_all(id: int, db:Session=Depends(get_db)):
     project= db.query(Project).filter(Project.id == id).first()
     ### Adding dollar prices
-    if project.name not in OpenSea_Url_Ending.keys:
+    if project.name not in OpenSea_Url_Ending.keys():
             project.__dict__["nft_floor_price_D"]=\
             float(project.nft_floor_price)*\
             CMC_API(project.required_token_name)\
