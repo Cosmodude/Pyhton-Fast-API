@@ -17,7 +17,7 @@ from External_API.API_script import CoinMarketCap_API as CMC_API, OpenSea_API
 
 load_dotenv()
 
-Not_on_Opensea={"Axie Infinity", "Thetan Arena", "Mobox" }
+Not_on_Opensea={"Axie Infinity", "Thetan Arena", "Mobox","Gods Unchained",}
 OpenSea_Url_Ending= {"Ice Poker":"decentral-games-ice","Stepn": "stepn","League of Kingdoms": "league-of-kingdoms" }
 
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -55,7 +55,7 @@ def get_all(db:Session=Depends(get_db)):
     ### Adding dollar prices
     #print(CMC_API(str(response[0].earn_token_name)))
     for project in response:
-        if project.name in Not_on_Opensea:
+        if project.name not in OpenSea_Url_Ending.keys:
             project.__dict__["nft_floor_price_D"]=\
             float(project.nft_floor_price)*\
             CMC_API(project.required_token_name)\
@@ -85,7 +85,7 @@ def get_all(db:Session=Depends(get_db)):
 def get_all(id: int, db:Session=Depends(get_db)):
     project= db.query(Project).filter(Project.id == id).first()
     ### Adding dollar prices
-    if project.name in Not_on_Opensea:
+    if project.name not in OpenSea_Url_Ending.keys:
             project.__dict__["nft_floor_price_D"]=\
             float(project.nft_floor_price)*\
             CMC_API(project.required_token_name)\
