@@ -46,7 +46,7 @@ class Project(Base):
     daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
     category=Column("project_category",String(200))
     nft_required=Column("nft_required_number",Integer)
-    project_poster=Column("poster_url",String(100))
+    nft_picture_url=Column("nft_picture_url",String(100))
     required_token_name=Column("buy_token_name",String(5) )
     
     def __repr__(self):
