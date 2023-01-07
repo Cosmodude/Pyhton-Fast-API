@@ -48,6 +48,7 @@ class Project(Base):
     nft_required=Column("nft_required_number",Integer)
     nft_picture_url=Column("nft_picture_url",String(100))
     required_token_name=Column("buy_token_name",String(5) )
+    click_and_buy_url=Column("click_and_buy_url",String(100))
     
     def __repr__(self):
         return f'{self.id}: {self.name}: floor price={self.site}'
