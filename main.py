@@ -13,7 +13,7 @@ from models.NFT_Project import Projects,Project
 from models.User_pre import User
 from sqlalchemy.orm import Session
 import jwt
-from External_API.API_script import CoinMarketCap_API as CMC_API, OpenSea_API
+from External_API.API_scripts import CoinMarketCap_API as CMC_API, OpenSea_API
 
 load_dotenv()
 
