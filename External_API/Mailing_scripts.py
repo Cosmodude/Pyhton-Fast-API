@@ -23,17 +23,5 @@ def send_email(receiver_email,receiver_name):
             </div>"\
      )
 receiver_name = "bill"
-# HtmlBody= f"<div className='email' style='\
-#             border: 1px solid black;\
-#             padding: 20px;\
-#             font-family: sans-serif;\
-#             line-height: 2;\
-#             font-size: 20px;\
-#             '>\
-#             <h2> Hello There, {receiver_name}!</h2>\
-#             <p>Test Email</p>\
-#             <p>💚, Crypto Goose Team</p>\
-#             </div>"\
-                
-#print(HtmlBody)
-#send_email('contact@crypto-goose.com','Vlad')
+
+send_email('contact@crypto-goose.com',receiver_name)

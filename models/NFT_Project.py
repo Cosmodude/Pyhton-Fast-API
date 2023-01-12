@@ -44,12 +44,13 @@ class Project(Base):
     project_image=Column("project_image_url",String(100))
     nft_floor_price=Column("floor_price_BT",Numeric(10,6) )
     daily_earn_rate_ET=Column("earn_rate_ET",Numeric(10,6))
-    category=Column("project_category",String(200))
+    category=Column("project_category",String(100))
     nft_required=Column("nft_required_number",Integer)
-    nft_picture_url=Column("nft_picture_url",String(100))
+    nft_picture_url=Column("nft_picture_url",String(500))
     required_token_name=Column("buy_token_name",String(5) )
-    click_and_buy_url=Column("click_and_buy_url",String(100))
-    
+    click_and_buy_url=Column("click_and_buy_url",String(200))
+    click_to_earn_url=Column("click_to_earn_url",String(200))
+
     def __repr__(self):
         return f'{self.id}: {self.name}: floor price={self.site}'
         
